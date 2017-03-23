@@ -31,14 +31,16 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         button.layer.borderColor = UIColor.blue.cgColor
         button.setTitleColor(UIColor.blue, for: .normal)
         button.backgroundColor = UIColor.white
+        button.addTarget(self, action: #selector(handleSignup), for: .touchUpInside)
         return button
     }()
     
     var usernameTextField: UITextField = {
         let field = UITextField()
-        field.placeholder = "Username"
+        field.placeholder = "Email"
         field.textColor = UIColor.gray
         field.backgroundColor = UIColor.white
+        field.autocapitalizationType = .none
         return field
     }()
     
@@ -47,6 +49,7 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
         field.placeholder = "Password"
         field.textColor = UIColor.gray
         field.backgroundColor = UIColor.white
+        field.autocapitalizationType = .none
         return field
     }()
 
@@ -98,36 +101,24 @@ class SignInViewController: UIViewController, UITextFieldDelegate {
     }
     
     func handleLogin() {
-        guard let username = usernameTextField.text, let password = passwordTextField.text else { return }
-        login(username: username, password: password)
-    }
-    
-    func login(username: String, password: String) {
-        let params: [String: String] = [
-            "username": username,
-            "password": password
-        ]
+        //Check if Username Field & Password Field are valid:
+        guard let email = usernameTextField.text, !email.isEmpty, let password = passwordTextField.text, !password.isEmpty else { return }
         
-        Alamofire.request("https://whale2-elixir.herokuapp.com/api/v1/sessions", method: .post, parameters: params).responseJSON { (response) in
-            
-            if let auth = response.response?.allHeaderFields["Authorization"] as? String {
-                if let json = response.result.value as? [String: Any] {
-                    User.sharedInstance.imageUrl = json["image_url"] as? String
-                    User.sharedInstance.firstName = json["first_name"] as? String
-                    User.sharedInstance.lastName = json["last_name"] as? String
-                    User.sharedInstance.id = json["id"] as? String
-                    User.sharedInstance.email = json["email"] as? String
-                    User.sharedInstance.followerCount = json["follower_count"] as? Int
-                    User.sharedInstance.followingCount = json["following_count"] as? Int
-                    User.sharedInstance.username = json["username"] as? String
-                    print("JSON: \(json)")
-                    print(auth)
-                    User.sharedInstance.authToken = auth
-                    User.sharedInstance.isLoggedIn = true
-                    self.dismiss(animated: true, completion: nil)
-                }
+        //Login User:
+        NetworkHelper.signIn(email: email, password: password) { (result) in
+            switch result {
+            case let .success(user):
+                print("Successfully logged in", user.firstName! as String)
+                self.dismiss(animated: true, completion: nil)
+            case let .failure(type):
+                print(type)
             }
         }
+    }
+    
+    func handleSignup() {
+        let signUpVC = SignupViewController()
+        present(signUpVC, animated: true, completion: nil)
     }
     
     func returnTextField() {

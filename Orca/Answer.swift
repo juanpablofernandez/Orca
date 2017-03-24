@@ -14,11 +14,11 @@ struct Answer {
     var sender: User?
     var receiver: User?
     
-    var questionId: String?
+    var questionId: Int?
     var content: String?
     
     var likesCount: Int?
-    var dataId: String?
+    var dataId: Int?
     var commentCount: Int?
 }
 

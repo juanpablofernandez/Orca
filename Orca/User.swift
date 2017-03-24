@@ -10,7 +10,6 @@ import UIKit
 
 struct User {
     
-    var isLoggedIn: Bool = false
     var id: String?
     var username: String?
     var firstName: String?

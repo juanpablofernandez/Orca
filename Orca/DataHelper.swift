@@ -17,13 +17,13 @@ class DataHelper {
         self.keychain[key] = data
     }
     
-    static func retrieveFromKeychain(key: String) -> String? {
+    static func getFromKeychain(key: String) -> String? {
         let data = self.keychain[key]
         return data
     }
     
     static func isKeyInKeychain(key: String) -> Bool {
-        if self.retrieveFromKeychain(key: key) != nil {
+        if self.getFromKeychain(key: key) != nil {
             return true
         }
         return false

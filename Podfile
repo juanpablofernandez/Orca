@@ -7,7 +7,7 @@ target 'Orca' do
 
   # Pods for Orca
 pod 'Alamofire', '~> 4.4'
-pod 'KeychainSwift', '~> 7.0'
 pod 'SwiftyJSON'
+pod 'KeychainAccess'
 
 end

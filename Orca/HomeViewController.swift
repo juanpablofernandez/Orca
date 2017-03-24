@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import KeychainSwift
 
 class HomeViewController: UIViewController {
     
@@ -15,15 +14,13 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         title = "Home"
         view.backgroundColor = UIColor.white
-        
-        if !User.sharedInstance.isLoggedIn {
-            let signInViewController = SignInViewController()
-            present(signInViewController, animated: true, completion: nil)
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print(User.sharedInstance.isLoggedIn)
+        if !DataHelper.isKeyInKeychain(key: "authToken") {
+            let signInViewController = SignInViewController()
+            present(signInViewController, animated: true, completion: nil)
+        }
     }
 }
 

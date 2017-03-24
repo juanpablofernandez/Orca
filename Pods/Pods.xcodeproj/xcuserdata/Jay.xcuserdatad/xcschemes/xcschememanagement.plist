@@ -9,7 +9,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>KeychainSwift.xcscheme</key>
+		<key>KeychainAccess.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -27,12 +27,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>38ACA430605AFB4229712A18BDDF5086</key>
+		<key>17FAF997D08EC9AAB796DD336CAA16D2</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8017E035AC3B178473D0D53664808748</key>
+		<key>7CE1F196941DE63D6E6C8487C497931B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -42,7 +42,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FD486946EC447B5A7807D90E7478B201</key>
+		<key>8905DB6521F8FDC34752B69DEE3FDEB7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

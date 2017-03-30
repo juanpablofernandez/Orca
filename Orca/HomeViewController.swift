@@ -10,18 +10,9 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-//    var collectionView: UICollectionView!
+    var collectionView: UICollectionView!
     
-    let collectionView : UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        if #available(iOS 10.0, *) {
-            layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-        } else {
-            layout.estimatedItemSize = CGSize(width: 300, height: 170)
-        }
-        let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        return cv
-    }()
+//    let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     var answers = [Answer]()
     
@@ -43,30 +34,17 @@ class HomeViewController: UIViewController {
     
     func collectionViewSetup() {
         //Collection View Layout
-//        let layout = UICollectionViewFlowLayout()
-//        
-//        let width = self.view.frame.width
-//        let height: CGFloat = 170
-//        
+        let layout = UICollectionViewFlowLayout()
+        
 //        layout.itemSize = CGSize(width: width, height: height)
 //        layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-//        layout.itemSize = UICollectionViewFlowLayoutAutomaticSize
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
 //        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
 //        layout.minimumInteritemSpacing = 10
 //        layout.minimumLineSpacing = 10
         
         //Collection View Setup
-//        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: layout)
+        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.clear
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(AnswerCell.self, forCellWithReuseIdentifier: "Cell")
@@ -77,10 +55,10 @@ class HomeViewController: UIViewController {
         
         // Anchors:
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
-        collectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -15).isActive = true
+        collectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0).isActive = true
         collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -44).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
     
     func getAnswers() {
@@ -94,17 +72,27 @@ class HomeViewController: UIViewController {
             }
         }
     }
+    
+    func estimateFrameForQuestion(text: String) -> CGRect {
+        let size = CGSize(width: self.collectionView.frame.width, height: 1000)
+        let options =  NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 16)], context: nil)
+    }
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        
-//        let width = collectionView.bounds.width
-//        let height = CGFloat(170)
-//        return CGSize(width: width, height: height)
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let width = collectionView.bounds.width
+        var height: CGFloat = 230
+        
+        if let text = self.answers[indexPath.row].content {
+            height = estimateFrameForQuestion(text: text).height + 205
+        }
+        return CGSize(width: width, height: height)
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.answers.count
@@ -112,7 +100,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! AnswerCell
-        cell.backgroundColor = UIColor.lightGray
+//        cell.backgroundColor = UIColor.lightGray
         let answer = self.answers[indexPath.row]
         let sender = answer.sender!
         cell.nameLabel.text = "\(sender.firstName!) \(sender.lastName!)"

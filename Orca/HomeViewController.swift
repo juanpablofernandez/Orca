@@ -12,8 +12,6 @@ class HomeViewController: UIViewController {
     
     var collectionView: UICollectionView!
     
-//    let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
-    
     var answers = [Answer]()
     
     override func viewDidLoad() {
@@ -86,10 +84,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let width = collectionView.bounds.width
-        var height: CGFloat = 230
+        var height: CGFloat = 280
         
         if let text = self.answers[indexPath.row].content {
-            height = estimateFrameForQuestion(text: text).height + 205
+            height = estimateFrameForQuestion(text: text).height + 255
         }
         return CGSize(width: width, height: height)
     }
@@ -100,14 +98,20 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! AnswerCell
-//        cell.backgroundColor = UIColor.lightGray
         let answer = self.answers[indexPath.row]
         let sender = answer.sender!
+        let receiver = answer.receiver!
         cell.nameLabel.text = "\(sender.firstName!) \(sender.lastName!)"
-        cell.contentField.text = answer.content!
+        cell.answerTextField.text = answer.content!
         let snapshotURL = answer.thumbnailUrl!
-        cell.snapshot.downloadedFrom(link: snapshotURL)
-        cell.snapshot.contentMode = .scaleAspectFill
+        cell.videoSnapshot.downloadedFrom(link: snapshotURL)
+        cell.videoSnapshot.contentMode = .scaleAspectFill
+        cell.videoSnapshot.likesLabel.text = answer.likesCount?.description
+        cell.videoSnapshot.commentsLabel.text = answer.commentCount?.description
+        cell.videoSnapshot.nameLabel.text = "\(receiver.firstName!) \(receiver.lastName!)"
+        let profileImageURL = receiver.imageUrl!
+        cell.videoSnapshot.profileImage.downloadedFrom(link: profileImageURL)
+        cell.videoSnapshot.profileImage.contentMode = .scaleAspectFit
         
         return cell
     }

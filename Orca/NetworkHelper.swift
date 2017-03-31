@@ -47,13 +47,12 @@ class NetworkHelper {
         }
     }
     
-    static func getAnswers(page: Int, per_page: Int, completion: @escaping (Result<[Answer]>)  -> Void) {
-        
+    static func getAnswers(page: Int, itemsInPage: Int, completion: @escaping (Result<AnswerPage>)  -> Void) {
         guard let authToken = DataHelper.getFromKeychain(key: "authToken") else { return }
         
         let params: [String: Int] = [
-            "page": page,
-            "per_page": per_page
+            "page": page - 1,
+            "per_page": itemsInPage
         ]
         
         let headers: HTTPHeaders = [
@@ -101,12 +100,16 @@ class NetworkHelper {
         return user
     }
     
-    static func parseAnswers(response: DataResponse<Any>) -> (Result<[Answer]>)  {
+    static func parseAnswers(response: DataResponse<Any>) -> (Result<AnswerPage>)  {
         switch response.result {
         case .success:
             let response = JSON(response.result.value as Any)
+            var page = AnswerPage()
+            page.totalPages = response["total_pages"].int
+            page.perPage = response["per_page"].int
+            page.page = response["page"].int
+            
             let data = response["data"]
-            var answers: [Answer] = []
             for i in 0...data.count - 1 {
                 var answer = Answer()
                 let item = data[i]
@@ -124,10 +127,10 @@ class NetworkHelper {
                 answer.dataId = item["id"].intValue
                 answer.commentCount = item["comment_count"].intValue
                 
-                answers.append(answer)
+                page.answers.append(answer)
             }
             
-            return Result.success(answers)
+            return Result.success(page)
             
         case .failure:
             return Result.failure(APIError.responseError)

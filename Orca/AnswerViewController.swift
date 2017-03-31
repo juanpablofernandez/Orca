@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class AnswerViewController: UIViewController {
     
@@ -19,8 +20,8 @@ class AnswerViewController: UIViewController {
         return view
     }()
     
-    var questionView: QuestionView = {
-        let view = QuestionView()
+    var questionView: UIScrollView = {
+        let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -36,11 +37,15 @@ class AnswerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
+        UIApplication.shared.statusBarStyle = .lightContent
         setup()
     }
     
+    fileprivate var playerLayer: AVPlayerLayer {
+        return layer as! AVPlayerLayer
+    }
+    
     func setup() {
-        
         if let answer = answer {
             view.addSubview(questionView)
             questionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0).isActive = true
@@ -55,8 +60,8 @@ class AnswerViewController: UIViewController {
             videoView.bottomAnchor.constraint(equalTo: questionView.topAnchor, constant: 0).isActive = true
             
             view.addSubview(exitButton)
-            exitButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
-            exitButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+            exitButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
+            exitButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 30).isActive = true
             exitButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
             exitButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         }

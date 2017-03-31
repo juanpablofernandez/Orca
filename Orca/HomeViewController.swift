@@ -11,23 +11,26 @@ import UIKit
 class HomeViewController: UIViewController {
     
     var collectionView: UICollectionView!
-    
     var answers = [Answer]()
+    var isPageRefreshing: Bool = false
+    var currentPageIndex: Int = 0
+    var totalPages: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Home"
         view.backgroundColor = UIColor.white
         collectionViewSetup()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
         if !DataHelper.isKeyInKeychain(key: "authToken") {
             let signInViewController = SignInViewController()
             present(signInViewController, animated: true, completion: nil)
         } else {
-            getAnswers()
+            getAnswers(currentPage: 1, itemsInPage: 5)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
     }
     
     func collectionViewSetup() {
@@ -59,11 +62,29 @@ class HomeViewController: UIViewController {
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
     }
     
-    func getAnswers() {
-        NetworkHelper.getAnswers(page: 0, per_page: 20) { (result) in
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if collectionView.contentOffset.y >= (collectionView.contentSize.height - collectionView.bounds.size.height) {
+            if !isPageRefreshing {
+                if currentPageIndex < totalPages {
+                    isPageRefreshing = true
+                    currentPageIndex += 1
+                    getAnswers(currentPage: currentPageIndex, itemsInPage: 5)
+                }
+            }
+        }
+    }
+    
+    func getAnswers(currentPage: Int, itemsInPage: Int) {
+        NetworkHelper.getAnswers(page: currentPage, itemsInPage: itemsInPage) { (result) in
             switch result {
-            case let .success(answers):
-                self.answers = answers
+            case let .success(page):
+                if self.currentPageIndex == 1 {
+                    self.answers = page.answers
+                } else {
+                    self.answers += page.answers
+                }
+                self.totalPages = page.totalPages!
+                self.isPageRefreshing = false
                 self.collectionView.reloadData()
             case let .failure(type):
                 print(type)

@@ -22,6 +22,13 @@ struct Answer {
     var commentCount: Int?
 }
 
+struct AnswerPage {
+    var answers = [Answer]()
+    var page: Int?
+    var totalPages: Int?
+    var perPage: Int?
+}
+
 //class Answer {
 //    
 //    var video_url: String?

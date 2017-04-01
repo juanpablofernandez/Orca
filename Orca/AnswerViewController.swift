@@ -13,15 +13,15 @@ class AnswerViewController: UIViewController {
     
     var answer: Answer?
     
-    var videoView: UIView = {
-        let view = UIView()
+    var videoView: PlayerView = {
+        let view = PlayerView(frame: CGRect.zero)
         view.backgroundColor = UIColor.black
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    var questionView: UIScrollView = {
-        let view = UIScrollView()
+    var questionView: QuestionView = {
+        let view = QuestionView(frame: CGRect.zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -41,12 +41,13 @@ class AnswerViewController: UIViewController {
         setup()
     }
     
-    fileprivate var playerLayer: AVPlayerLayer {
-        return layer as! AVPlayerLayer
+    override func viewDidLayoutSubviews() {
+        self.videoView.answer = self.answer
     }
     
     func setup() {
         if let answer = answer {
+            questionView.answer = self.answer
             view.addSubview(questionView)
             questionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0).isActive = true
             questionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0).isActive = true

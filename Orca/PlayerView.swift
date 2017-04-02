@@ -22,6 +22,11 @@ class PlayerView: UIView {
         }
     }
     
+    var player: AVPlayer = {
+        let player = AVPlayer()
+        return player
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -34,30 +39,27 @@ class PlayerView: UIView {
     func setup() {
         if let answer = self.answer {
             let url = URL(string: answer.videoUrl!)
-            let player = AVPlayer(url: url!)
+            player = AVPlayer(url: url!)
             let playerLayer = AVPlayerLayer(player: player)
             playerLayer.frame = self.bounds
             playerLayer.videoGravity = "AVLayerVideoGravityResizeAspectFill"
             self.layer.addSublayer(playerLayer)
-            player.play()
-            print("Playing Video")
+            
+            //Video Loop:
+            NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: nil, using: { (_) in
+                DispatchQueue.main.async {
+                    self.player.seek(to: kCMTimeZero)
+                    self.player.play()
+                }
+            })
         }
-//        let path = "HTTP_VIDEO_URL_HERE"
-//        let url = URL(string: path)
-//        let avAsset = AVAsset(URL: url!)
-//        let avPlayerItem = AVPlayerItem(asset: avAsset)
-//        
-//        let avPlayer = AVPlayer(playerItem: avPlayerItem)
-//        let avPlayerLayer = AVPlayerLayer(layer: avPlayer)
-//        
-//        avPlayerLayer.frame = self.frame
-//        self.layer.addSublayer(avPlayerLayer)
-//        
-//        self.player = avPlayer
-//        
-//        self.player!.seekToTime(kCMTimeZero)
-//        self.player!.play()
     }
     
+    func playVideo() {
+        player.play()
+    }
     
+    func pausePlayer() {
+        player.pause()
+    }
 }

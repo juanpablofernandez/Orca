@@ -33,6 +33,16 @@ class AnswerViewController: UIViewController {
         button.addTarget(self, action: #selector(handleExit), for: .touchUpInside)
         return button
     }()
+    
+    var videoControl: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "play.png"), for: .normal)
+        button.addTarget(self, action: #selector(handlePlayAndPause), for: .touchUpInside)
+        return button
+    }()
+    
+    var currentVideoState: VideoState = .paused
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +70,12 @@ class AnswerViewController: UIViewController {
             videoView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
             videoView.bottomAnchor.constraint(equalTo: questionView.topAnchor, constant: 0).isActive = true
             
+            view.addSubview(videoControl)
+            videoControl.centerXAnchor.constraint(equalTo: videoView.centerXAnchor).isActive = true
+            videoControl.bottomAnchor.constraint(equalTo: videoView.bottomAnchor, constant: -20).isActive = true
+            videoControl.heightAnchor.constraint(equalToConstant: 40).isActive = true
+            videoControl.widthAnchor.constraint(equalToConstant: 40).isActive = true
+            
             view.addSubview(exitButton)
             exitButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
             exitButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 30).isActive = true
@@ -68,7 +84,25 @@ class AnswerViewController: UIViewController {
         }
     }
     
+    func handlePlayAndPause(sender: UIButton) {
+        if currentVideoState == .paused {
+            sender.setImage(UIImage(named: "pause.png"), for: .normal)
+            currentVideoState = .playing
+            videoView.playVideo()
+            
+        } else {
+            sender.setImage(UIImage(named: "play.png"), for: .normal)
+            currentVideoState = .paused
+            videoView.pausePlayer()
+        }
+    }
+    
     func handleExit() {
         self.dismiss(animated: true, completion: nil)
     }
+}
+
+enum VideoState {
+    case playing
+    case paused
 }

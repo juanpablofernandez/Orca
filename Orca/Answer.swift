@@ -28,20 +28,3 @@ struct AnswerPage {
     var totalPages: Int?
     var perPage: Int?
 }
-
-//class Answer {
-//    
-//    var video_url: String?
-//    var thumbnail_url: String?
-//    var sender: User?
-//    var receiver: User?
-//    
-//    var questionId: String?
-//    var content: String?
-//    
-//    var likesCount: Int?
-//    var dataId: String?
-//    var commentCount: Int?
-//    
-//    init() {}
-//}

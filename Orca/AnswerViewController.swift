@@ -98,6 +98,7 @@ class AnswerViewController: UIViewController {
     }
     
     func handleExit() {
+        videoView.pausePlayer()
         self.dismiss(animated: true, completion: nil)
     }
 }

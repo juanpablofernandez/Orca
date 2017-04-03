@@ -48,3 +48,13 @@ extension UIImageView {
         downloadedFrom(url: url, contentMode: mode)
     }
 }
+
+extension UIImage {
+    
+    func enableMask() -> UIImage? {
+        let mode = UIImageRenderingMode.alwaysTemplate
+        let templateImage = self.withRenderingMode(mode)
+        return templateImage
+    }
+    
+}

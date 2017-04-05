@@ -12,6 +12,7 @@ import SwiftyJSON
 
 enum APIError: Swift.Error {
     case responseError
+    case parseError
 }
 
 enum Result<T> {
@@ -47,7 +48,7 @@ class NetworkHelper {
         }
     }
     
-    static func getAnswers(page: Int, itemsInPage: Int, completion: @escaping (Result<AnswerPage>)  -> Void) {
+    static func getAnswers(page: Int, itemsInPage: Int, completion: @escaping (Result<AnswerPage>) -> Void) {
         guard let authToken = DataHelper.getFromKeychain(key: "authToken") else { return }
         
         let params: [String: Int] = [
@@ -62,6 +63,24 @@ class NetworkHelper {
         
         Alamofire.request("https://whale2-elixir.herokuapp.com/api/v1/answers", method: .get, parameters: params, headers: headers).responseJSON { (response) in
             
+            return completion(parseAnswers(response: response))
+        }
+    }
+    
+    static func getComments(page: Int, itemsInPage: Int, answerId: Int, completion: @escaping (Result<AnswerPage>) -> Void) {
+        guard let authToken = DataHelper.getFromKeychain(key: "authToken") else { return }
+        
+        let params: [String: Int] = [
+            "page": page - 1,
+            "per_page": itemsInPage
+        ]
+        
+        let headers: HTTPHeaders = [
+            "Authorization": authToken,
+            "Content-Type": "application/x-www-form-urlencoded"
+        ]
+        
+        Alamofire.request("https://whale2-elixir.herokuapp.com/api/v1/answers/\(answerId)/comments?per_page=10&page=0", method: .get, parameters: params, headers: headers).responseJSON { (response) in
             return completion(parseAnswers(response: response))
         }
     }

@@ -55,20 +55,26 @@ class AnswerViewController: UIViewController {
         self.videoView.answer = self.answer
     }
     
+    var questionViewTopAnchor: NSLayoutConstraint?
+    
     func setup() {
         if let answer = answer {
-            questionView.answer = self.answer
-            view.addSubview(questionView)
-            questionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0).isActive = true
-            questionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0).isActive = true
-            questionView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-            questionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
             
             view.addSubview(videoView)
             videoView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0).isActive = true
             videoView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0).isActive = true
             videoView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
-            videoView.bottomAnchor.constraint(equalTo: questionView.topAnchor, constant: 0).isActive = true
+            videoView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100).isActive = true
+            
+            questionView.viewCommentsButton.addTarget(self, action: #selector(handleComments), for: .touchUpInside)
+            questionView.answer = self.answer
+            view.addSubview(questionView)
+            questionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0).isActive = true
+            questionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0).isActive = true
+            questionView.heightAnchor.constraint(equalToConstant: view.bounds.height + 100).isActive = true
+//            questionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+            questionViewTopAnchor = questionView.topAnchor.constraint(equalTo: videoView.bottomAnchor)
+            questionViewTopAnchor?.isActive = true
             
             view.addSubview(videoControl)
             videoControl.centerXAnchor.constraint(equalTo: videoView.centerXAnchor).isActive = true
@@ -94,6 +100,15 @@ class AnswerViewController: UIViewController {
             sender.setImage(UIImage(named: "play.png"), for: .normal)
             currentVideoState = .paused
             videoView.pausePlayer()
+        }
+    }
+    
+    func handleComments() {
+        let height = videoView.bounds.height + 100
+        self.questionViewTopAnchor?.constant = -height
+        
+        UIView.animate(withDuration: 0.5) {
+            self.view.layoutIfNeeded()
         }
     }
     

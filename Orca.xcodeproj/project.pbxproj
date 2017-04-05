@@ -26,6 +26,8 @@
 		692347491E82E5330081B036 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692347411E82E5330081B036 /* TabBarController.swift */; };
 		6923474A1E82E5330081B036 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692347421E82E5330081B036 /* User.swift */; };
 		6923474C1E82F5D70081B036 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6923474B1E82F5D70081B036 /* SignUpViewController.swift */; };
+		6988890A1E9568F500BC152B /* CommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698889091E9568F500BC152B /* CommentsViewController.swift */; };
+		6988890D1E956CB600BC152B /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6988890C1E956CB600BC152B /* CommentCell.swift */; };
 		6989B72A1E8DF7BA00048CFF /* AnswerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6989B7291E8DF7BA00048CFF /* AnswerViewController.swift */; };
 		6989B72C1E8E14D500048CFF /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6989B72B1E8E14D500048CFF /* QuestionView.swift */; };
 		A65C00993DF1560E1A6E33D9 /* Pods_Orca.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E72E230FD0F3CF4D05F3CF1B /* Pods_Orca.framework */; };
@@ -54,6 +56,8 @@
 		692347411E82E5330081B036 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		692347421E82E5330081B036 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		6923474B1E82F5D70081B036 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		698889091E9568F500BC152B /* CommentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsViewController.swift; sourceTree = "<group>"; };
+		6988890C1E956CB600BC152B /* CommentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		6989B7291E8DF7BA00048CFF /* AnswerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnswerViewController.swift; sourceTree = "<group>"; };
 		6989B72B1E8E14D500048CFF /* QuestionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		DA40C5475576ABF71E121BE3 /* Pods-Orca.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Orca.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Orca/Pods-Orca.debug.xcconfig"; sourceTree = "<group>"; };
@@ -97,6 +101,7 @@
 			children = (
 				6989B7271E8DF78700048CFF /* Answers */,
 				6989B7281E8DF79100048CFF /* Answer */,
+				6988890B1E956C9C00BC152B /* Comments */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -193,6 +198,15 @@
 				691441631E8DAF4600588A6A /* Scenes */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		6988890B1E956C9C00BC152B /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				698889091E9568F500BC152B /* CommentsViewController.swift */,
+				6988890C1E956CB600BC152B /* CommentCell.swift */,
+			);
+			name = Comments;
 			sourceTree = "<group>";
 		};
 		6989B7271E8DF78700048CFF /* Answers */ = {
@@ -355,6 +369,7 @@
 				6989B72A1E8DF7BA00048CFF /* AnswerViewController.swift in Sources */,
 				690A7BB91E847D8C0031ECCF /* Answer.swift in Sources */,
 				692347261E82E3540081B036 /* AppDelegate.swift in Sources */,
+				6988890A1E9568F500BC152B /* CommentsViewController.swift in Sources */,
 				692347441E82E5330081B036 /* Extensions.swift in Sources */,
 				6923474C1E82F5D70081B036 /* SignUpViewController.swift in Sources */,
 				6902F90B1E8F156A001E1749 /* PlayerView.swift in Sources */,
@@ -362,6 +377,7 @@
 				692347461E82E5330081B036 /* ProfileViewController.swift in Sources */,
 				6923474A1E82E5330081B036 /* User.swift in Sources */,
 				692347431E82E5330081B036 /* ActivityViewController.swift in Sources */,
+				6988890D1E956CB600BC152B /* CommentCell.swift in Sources */,
 				6903F7161E8C23190003A8C2 /* AnswerCell.swift in Sources */,
 				692347451E82E5330081B036 /* HomeViewController.swift in Sources */,
 				691441691E8DB46C00588A6A /* AnswerSnapshotView.swift in Sources */,

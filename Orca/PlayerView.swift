@@ -36,6 +36,10 @@ class PlayerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     func setup() {
         if let answer = self.answer {
             let url = URL(string: answer.videoUrl!)
@@ -46,12 +50,12 @@ class PlayerView: UIView {
             self.layer.addSublayer(playerLayer)
             
             //Video Loop:
-            NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: nil, using: { (_) in
-                DispatchQueue.main.async {
-                    self.player.seek(to: kCMTimeZero)
-                    self.player.play()
-                }
-            })
+//            NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: nil, using: { (_) in
+//                DispatchQueue.main.async {
+//                    self.player.seek(to: kCMTimeZero)
+//                    self.player.play()
+//                }
+//            })
         }
     }
     

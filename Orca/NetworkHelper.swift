@@ -67,7 +67,7 @@ class NetworkHelper {
         }
     }
     
-    static func getComments(page: Int, itemsInPage: Int, answerId: Int, completion: @escaping (Result<AnswerPage>) -> Void) {
+    static func getComments(page: Int, itemsInPage: Int, answerId: Int, completion: @escaping (Result<CommentPage>) -> Void) {
         guard let authToken = DataHelper.getFromKeychain(key: "authToken") else { return }
         
         let params: [String: Int] = [
@@ -81,7 +81,7 @@ class NetworkHelper {
         ]
         
         Alamofire.request("https://whale2-elixir.herokuapp.com/api/v1/answers/\(answerId)/comments?per_page=10&page=0", method: .get, parameters: params, headers: headers).responseJSON { (response) in
-            return completion(parseAnswers(response: response))
+            return completion(parseComments(response: response))
         }
     }
     
@@ -117,6 +117,36 @@ class NetworkHelper {
         user.username = response["username"].stringValue
         
         return user
+    }
+    
+    static func parseComments(response: DataResponse<Any>) -> (Result<CommentPage>) {
+        switch response.result {
+        case .success:
+            let response = JSON(response.result.value as Any)
+            var page = CommentPage()
+            page.totalPages = response["total_pages"].int
+            page.perPage = response["per_page"].int
+            page.page = response["page"].int
+            
+            let data = response["data"]
+            
+            for i in 0..<data.count {
+                var comment = Comment()
+                let item = data[i]
+                
+                comment.id = item["id"].intValue
+                comment.content = item["content"].stringValue
+                comment.commenter = parseUserInfo(response: item["commenter"])
+                comment.answerId = item["answer_id"].intValue
+                
+                page.comments.append(comment)
+            }
+            
+            return Result.success(page)
+            
+        case .failure:
+            return Result.failure(APIError.responseError)
+        }
     }
     
     static func parseAnswers(response: DataResponse<Any>) -> (Result<AnswerPage>)  {

@@ -107,6 +107,11 @@ class AnswerViewController: UIViewController {
         let height = videoView.bounds.height + 100
         self.questionViewTopAnchor?.constant = -height
         
+        
+        let commentsController = CommentsViewController()
+        commentsController.answerId = self.answer?.dataId
+        self.present(commentsController, animated: true, completion: nil)
+        
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
